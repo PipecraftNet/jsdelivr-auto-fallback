@@ -1,0 +1,38 @@
+{
+  "name": "jsdelivr-auto-fallback",
+  "version": "0.0.1",
+  "description": "修复 cdn.jsdelivr.net 无法访问的问题",
+  "main": "index.js",
+  "scripts": {
+    "build": "uglifyjs index.js -c -m -o index.min.js",
+    "lint": "prettier --write . && xo",
+    "lint:fix": "prettier --write . && xo --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PipecraftNet/jsdelivr-auto-fallback.git"
+  },
+  "keywords": [
+    "jsdelivr"
+  ],
+  "author": "Pipecraft <pipecraft.net@gmail.com> (https://www.pipecraft.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues"
+  },
+  "homepage": "https://github.com/PipecraftNet/jsdelivr-auto-fallback#readme",
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "uglify-js": "^3.15.5",
+    "xo": "^0.49.0"
+  },
+  "xo": {
+    "space": 2,
+    "prettier": true,
+    "rules": {
+      "capitalized-comments": 0,
+      "no-undef": 0
+    }
+  }
+}

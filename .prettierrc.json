@@ -1,0 +1,12 @@
+{
+  "overrides": [
+    {
+      "files": ["**/*.js"],
+      "options": {
+        "singleQuote": true,
+        "trailingComma": "none",
+        "bracketSpacing": true
+      }
+    }
+  ]
+}

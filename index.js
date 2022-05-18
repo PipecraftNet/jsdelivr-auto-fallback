@@ -15,7 +15,7 @@
     img.src = SOURCE + '/favicon.ico';
   };
 
-  const replaceImageSrc = () => {
+  const replaceElementSrc = () => {
     for (const element of $('img')) {
       if (element.src && element.src.includes(SOURCE)) {
         element.src = element.src.replace(SOURCE, DEST);
@@ -45,8 +45,8 @@
 
     console.warn(SOURCE + ' is not available.');
 
-    replaceImageSrc();
+    replaceElementSrc();
     // Replace dynamically added elements
-    setInterval(replaceImageSrc, 2000);
+    setInterval(replaceElementSrc, 2000);
   });
 })();

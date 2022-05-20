@@ -1,6 +1,6 @@
 {
   "name": "jsdelivr-auto-fallback",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "修复 cdn.jsdelivr.net 无法访问的问题",
   "main": "index.js",
   "scripts": {

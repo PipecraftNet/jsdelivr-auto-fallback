@@ -1,6 +1,8 @@
 (function (document) {
   const SOURCE = 'https://cdn.jsdelivr.net';
   const DEST = 'https://gcore.jsdelivr.net';
+  const replace = (text) => text.replace(SOURCE, DEST);
+  const shouldReplace = (text) => text && text.includes(SOURCE);
   const $ = document.querySelectorAll.bind(document);
   const checkAvailable = (callback) => {
     let timeoutId;
@@ -14,7 +16,7 @@
 
       clearTimeout(timeoutId);
       timeoutId = 0;
-      newNode.href = 'about:blank';
+      newNode.href = 'data:text/plain;base64,';
       newNode.remove();
       callback(false);
     };
@@ -36,15 +38,15 @@
 
   const replaceElementSrc = () => {
     for (const element of $('link[rel="stylesheet"]')) {
-      if (element.href && element.href.includes(SOURCE)) {
-        element.href = element.href.replace(SOURCE, DEST);
+      if (shouldReplace(element.href)) {
+        element.href = replace(element.href);
       }
     }
 
     for (const element of $('script')) {
-      if (element.src && element.src.includes(SOURCE)) {
+      if (shouldReplace(element.src)) {
         const newNode = document.createElement('script');
-        newNode.src = element.src.replace(SOURCE, DEST);
+        newNode.src = replace(element.src);
         element.defer = true;
         element.src = '';
         element.before(newNode);
@@ -53,11 +55,11 @@
     }
 
     for (const element of $('img')) {
-      if (element.src && element.src.includes(SOURCE)) {
+      if (shouldReplace(element.src)) {
         const source = element.src;
         // Used to cancel loading. Without this line it will remain pending status.
         element.src = '';
-        element.src = source.replace(SOURCE, DEST);
+        element.src = replace(source);
       }
     }
   };

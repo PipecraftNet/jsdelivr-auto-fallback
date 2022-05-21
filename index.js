@@ -1,6 +1,6 @@
 (function (document) {
-  const SOURCE = 'https://cdn.jsdelivr.net';
-  const DEST = 'https://gcore.jsdelivr.net';
+  const SOURCE = '//cdn.jsdelivr.net';
+  const DEST = '//gcore.jsdelivr.net';
   const replace = (text) => text.replace(SOURCE, DEST);
   const shouldReplace = (text) => text && text.includes(SOURCE);
   const $ = document.querySelectorAll.bind(document);
@@ -61,6 +61,21 @@
         // Used to cancel loading. Without this line it will remain pending status.
         element.src = '';
         element.src = replace(value);
+      }
+    }
+
+    // All elements that have a style attribute
+    for (element of $('*[style]')) {
+      value = element.getAttribute('style');
+      if (shouldReplace(value)) {
+        element.setAttribute('style', replace(value));
+      }
+    }
+
+    for (element of $('style')) {
+      value = element.innerHTML;
+      if (shouldReplace(value)) {
+        element.innerHTML = replace(value);
       }
     }
   };

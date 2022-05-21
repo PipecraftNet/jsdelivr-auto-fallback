@@ -9,25 +9,22 @@
     const newNode = document.createElement('link');
     newNode.rel = 'stylesheet';
     newNode.text = 'text/css';
-    const onError = () => {
+    const handleResult = (isSuccess) => {
       if (!timeoutId) {
         return;
       }
 
       clearTimeout(timeoutId);
       timeoutId = 0;
-      newNode.href = 'data:text/plain;base64,';
+      // Used to cancel loading. Without this line it will remain pending status.
+      if (!isSuccess) newNode.href = 'data:text/plain;base64,';
       newNode.remove();
-      callback(false);
+      callback(isSuccess);
     };
 
-    timeoutId = setTimeout(onError, 2000);
-    newNode.addEventListener('error', onError);
-    newNode.addEventListener('load', function () {
-      newNode.remove();
-      clearTimeout(timeoutId);
-      callback(true);
-    });
+    timeoutId = setTimeout(handleResult, 2000);
+    newNode.addEventListener('error', handleResult);
+    newNode.addEventListener('load', () => handleResult(true));
 
     newNode.href =
       SOURCE +
@@ -37,16 +34,20 @@
   };
 
   const replaceElementSrc = () => {
-    for (const element of $('link[rel="stylesheet"]')) {
-      if (shouldReplace(element.href)) {
-        element.href = replace(element.href);
+    let element;
+    let value;
+    for (element of $('link[rel="stylesheet"]')) {
+      value = element.href;
+      if (shouldReplace(value)) {
+        element.href = replace(value);
       }
     }
 
-    for (const element of $('script')) {
-      if (shouldReplace(element.src)) {
+    for (element of $('script')) {
+      value = element.src;
+      if (shouldReplace(value)) {
         const newNode = document.createElement('script');
-        newNode.src = replace(element.src);
+        newNode.src = replace(value);
         element.defer = true;
         element.src = '';
         element.before(newNode);
@@ -54,12 +55,12 @@
       }
     }
 
-    for (const element of $('img')) {
-      if (shouldReplace(element.src)) {
-        const source = element.src;
+    for (element of $('img')) {
+      value = element.src;
+      if (shouldReplace(value)) {
         // Used to cancel loading. Without this line it will remain pending status.
         element.src = '';
-        element.src = replace(source);
+        element.src = replace(value);
       }
     }
   };

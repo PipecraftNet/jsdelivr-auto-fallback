@@ -1,37 +1,18 @@
-(function (document) {
-  const SOURCE = '//cdn.jsdelivr.net';
-  const DEST = '//gcore.jsdelivr.net';
-  const replace = (text) => text.replace(SOURCE, DEST);
-  const shouldReplace = (text) => text && text.includes(SOURCE);
+((document) => {
+  'use strict';
+  const DEST_LIST = [
+    'cdn.jsdelivr.net',
+    'fastly.jsdelivr.net',
+    'gcore.jsdelivr.net',
+    'testingcf.jsdelivr.net',
+    'test1.jsdelivr.net'
+  ];
+  const PREFIX = '//';
+  const SOURCE = DEST_LIST[0];
+  // const starTime = Date.now();
+  const shouldReplace = (text) => text && text.includes(PREFIX + SOURCE);
+  const replace = (text) => text.replace(PREFIX + SOURCE, PREFIX + fastNode);
   const $ = document.querySelectorAll.bind(document);
-  const checkAvailable = (callback) => {
-    let timeoutId;
-    const newNode = document.createElement('link');
-    newNode.rel = 'stylesheet';
-    newNode.text = 'text/css';
-    const handleResult = (isSuccess) => {
-      if (!timeoutId) {
-        return;
-      }
-
-      clearTimeout(timeoutId);
-      timeoutId = 0;
-      // Used to cancel loading. Without this line it will remain pending status.
-      if (!isSuccess) newNode.href = 'data:text/plain;base64,';
-      newNode.remove();
-      callback(isSuccess);
-    };
-
-    timeoutId = setTimeout(handleResult, 2000);
-    newNode.addEventListener('error', handleResult);
-    newNode.addEventListener('load', () => handleResult(true));
-
-    newNode.href =
-      SOURCE +
-      '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?' +
-      Date.now();
-    document.head.insertAdjacentElement('afterbegin', newNode);
-  };
 
   const replaceElementSrc = () => {
     let element;
@@ -80,15 +61,69 @@
     }
   };
 
-  checkAvailable(function (isAvailable) {
-    if (isAvailable) {
-      return;
+  const tryReplace = () => {
+    if (failed && fastNode) {
+      console.warn(SOURCE + ' is not available. Use ' + fastNode);
+      failed = false;
+
+      replaceElementSrc();
+      // Replace dynamically added elements
+      setInterval(replaceElementSrc, 500);
     }
+  };
 
-    console.warn(SOURCE + ' is not available.');
+  const checkAvailable = (url, callback) => {
+    let timeoutId;
+    const newNode = document.createElement('link');
+    const handleResult = (isSuccess) => {
+      if (!timeoutId) {
+        return;
+      }
 
-    replaceElementSrc();
-    // Replace dynamically added elements
-    setInterval(replaceElementSrc, 500);
-  });
+      clearTimeout(timeoutId);
+      timeoutId = 0;
+      // Used to cancel loading. Without this line it will remain pending status.
+      if (!isSuccess) newNode.href = 'data:text/plain;base64,';
+      newNode.remove();
+      callback(isSuccess);
+    };
+
+    timeoutId = setTimeout(handleResult, 1000);
+
+    newNode.addEventListener('error', () => handleResult(false));
+    newNode.addEventListener('load', () => handleResult(true));
+    newNode.rel = 'stylesheet';
+    newNode.text = 'text/css';
+    newNode.href =
+      url +
+      '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?' +
+      Date.now();
+    document.head.insertAdjacentElement('afterbegin', newNode);
+  };
+
+  let fastNode;
+  let failed;
+
+  for (const url of DEST_LIST) {
+    checkAvailable('https://' + url, (isAvailable) => {
+      // console.log(url, Date.now() - starTime, Boolean(isAvailable));
+      if (!isAvailable && url === SOURCE) {
+        failed = true;
+      }
+
+      if (isAvailable && !fastNode) {
+        fastNode = url;
+      }
+
+      tryReplace();
+    });
+  }
+
+  // If all domains are timeout
+  setTimeout(() => {
+    if (failed && !fastNode) {
+      fastNode = DEST_LIST[1];
+      tryReplace();
+    }
+  }, 1100);
 })(document);

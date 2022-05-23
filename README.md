@@ -7,8 +7,9 @@
 
 比如
 
-- `gcore.jsdelivr.net`
 - `fastly.jsdelivr.net`
+- `gcore.jsdelivr.net`
+- [更多](index.js)
 
 ## 适用场景
 
@@ -25,6 +26,11 @@
 1. 所有 `script` 标签加上 `defer` 属性。如果原来有 `async` 属性，可以跳过。这个可以避免 `pending` 状态带来的等待时间，大大提升性能。
 
 ## Release Note
+
+### v0.1.0 (2022/5/24)
+
+- 从几个可用的域名中，自动选择连接最快的域名 ([#5](https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues/5))
+- 检测连接 timeout 从 2 秒改为 1 秒，缩短等待切换时间
 
 ### v0.0.3 (2022/5/22)
 

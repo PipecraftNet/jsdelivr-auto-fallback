@@ -27,6 +27,11 @@
 
 ## Release Note
 
+### v0.2.0 (2022/5/24)
+
+- 检测结果保存到 localStorage，下一次加载时，无需检测，直接使用检测结果中的 fallback domain，缩短等待切换时间
+- 考虑网络慢的环境，检测连接 timeout 从 1 秒改回到 2 秒，由于保存检测结果，第二次加载时，比之前版本还快
+
 ### v0.1.0 (2022/5/24)
 
 - 从几个可用的域名中，自动选择连接最快的域名 ([#5](https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues/5))

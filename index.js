@@ -1,5 +1,8 @@
 ((document) => {
   'use strict';
+  let fastNode;
+  let failed;
+  let isRunning;
   const DEST_LIST = [
     'cdn.jsdelivr.net',
     'fastly.jsdelivr.net',
@@ -9,9 +12,13 @@
   ];
   const PREFIX = '//';
   const SOURCE = DEST_LIST[0];
-  // const starTime = Date.now();
+  const starTime = Date.now();
+  const TIMEOUT = 2000;
+  const STORE_KEY = 'jsdelivr-auto-fallback';
+  const TEST_PATH = '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?';
   const shouldReplace = (text) => text && text.includes(PREFIX + SOURCE);
   const replace = (text) => text.replace(PREFIX + SOURCE, PREFIX + fastNode);
+  const setTimeout = window.setTimeout;
   const $ = document.querySelectorAll.bind(document);
 
   const replaceElementSrc = () => {
@@ -19,7 +26,7 @@
     let value;
     for (element of $('link[rel="stylesheet"]')) {
       value = element.href;
-      if (shouldReplace(value)) {
+      if (shouldReplace(value) && !value.includes(TEST_PATH)) {
         element.href = replace(value);
       }
     }
@@ -62,11 +69,12 @@
   };
 
   const tryReplace = () => {
-    if (failed && fastNode) {
+    if (!isRunning && failed && fastNode) {
       console.warn(SOURCE + ' is not available. Use ' + fastNode);
-      failed = false;
-
-      replaceElementSrc();
+      isRunning = true;
+      setTimeout(replaceElementSrc, 0);
+      // Some need to wait for a while
+      setTimeout(replaceElementSrc, 20);
       // Replace dynamically added elements
       setInterval(replaceElementSrc, 500);
     }
@@ -88,42 +96,74 @@
       callback(isSuccess);
     };
 
-    timeoutId = setTimeout(handleResult, 1000);
+    timeoutId = setTimeout(handleResult, TIMEOUT);
 
     newNode.addEventListener('error', () => handleResult(false));
     newNode.addEventListener('load', () => handleResult(true));
     newNode.rel = 'stylesheet';
     newNode.text = 'text/css';
-    newNode.href =
-      url +
-      '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?' +
-      Date.now();
+    newNode.href = url + TEST_PATH + starTime;
     document.head.insertAdjacentElement('afterbegin', newNode);
   };
 
-  let fastNode;
-  let failed;
-
-  for (const url of DEST_LIST) {
-    checkAvailable('https://' + url, (isAvailable) => {
-      // console.log(url, Date.now() - starTime, Boolean(isAvailable));
-      if (!isAvailable && url === SOURCE) {
-        failed = true;
-      }
-
-      if (isAvailable && !fastNode) {
-        fastNode = url;
-      }
-
-      tryReplace();
-    });
-  }
-
-  // If all domains are timeout
-  setTimeout(() => {
-    if (failed && !fastNode) {
-      fastNode = DEST_LIST[1];
-      tryReplace();
+  const cached = (() => {
+    try {
+      return Object.assign(
+        {},
+        JSON.parse(localStorage.getItem(STORE_KEY) || '{}')
+      );
+    } catch {
+      return {};
     }
-  }, 1100);
+  })();
+
+  const main = () => {
+    cached.time = starTime;
+    cached.failed = false;
+    cached.fastNode = null;
+
+    for (const url of DEST_LIST) {
+      checkAvailable('https://' + url, (isAvailable) => {
+        // console.log(url, Date.now() - starTime, Boolean(isAvailable));
+        if (!isAvailable && url === SOURCE) {
+          failed = true;
+          cached.failed = true;
+        }
+
+        if (isAvailable && !fastNode) {
+          fastNode = url;
+        }
+
+        if (isAvailable && !cached.fastNode) {
+          cached.fastNode = url;
+        }
+
+        tryReplace();
+      });
+    }
+
+    setTimeout(() => {
+      // If all domains are timeout
+      if (failed && !fastNode) {
+        fastNode = DEST_LIST[1];
+        tryReplace();
+      }
+
+      localStorage.setItem(STORE_KEY, JSON.stringify(cached));
+    }, TIMEOUT + 100);
+  };
+
+  if (
+    cached.time &&
+    starTime - cached.time < 60 * 60 * 1000 &&
+    cached.failed &&
+    cached.fastNode
+  ) {
+    failed = true;
+    fastNode = cached.fastNode;
+    tryReplace();
+    setTimeout(main, 1000);
+  } else {
+    main();
+  }
 })(document);

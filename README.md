@@ -11,6 +11,19 @@
 - `gcore.jsdelivr.net`
 - [更多](index.js)
 
+你也可以自己准备一个静态资源服务器，只把网站用到的 js, css, img 文件放进去，和 `cdn.jsdelivr.net` 保持同样的文件目录结构，相当于 `cdn.jsdelivr.net` 的一个部分镜像。或者建一个 `cdn.jsdelivr.net` 的 proxy 服务器。然后把静态资源服务器网址放到[列表里](index.js)。这样的话，在 `jsdelivr.net` 可用的地区或时候，用 `jsdelivr.net`，不可用时，用自己的静态资源服务器。
+
+ex.
+
+```diff
+  const DEST_LIST = [
+    'cdn.jsdelivr.net',
+    'fastly.jsdelivr.net',
+    'gcore.jsdelivr.net',
++   'static.mysite.xxx',
+  ];
+```
+
 ## 适用场景
 
 如果可以切换到其他 CDN，**建议尽量切换**。如果是以下几种情况，可以考虑使用本项目。

@@ -36,8 +36,12 @@ ex.
 ## 添加方法
 
 1. 直接复制 [index.js](index.js) 或 [index.min.js](index.min.js) 里的内容，加到网站里。强烈建议添加到 head 标签最上面。
-1. 所有 `script` 标签加上 `defer` 属性。如果原来有 `async` 属性，可以跳过。这个可以避免 `pending` 状态带来的等待时间，大大提升性能。
+2. 所有 `script` 标签加上 `defer` 属性。如果原来有 `async` 属性，可以跳过。这个可以避免 `pending` 状态带来的等待时间，大大提升性能。
 
+## 用户脚本
+> 作为用户,你也可以使用本油猴脚本来将网站中的`cdn.jsdelivr.net`替换为可以访问的域名
+1. 安装`Tampermonkey`(自行百度)
+2. 前往此处安装脚本
 ## Release Note
 
 ### v0.2.0 (2022/5/24)

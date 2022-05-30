@@ -1,4 +1,4 @@
-# jsdelivr-auto-fallback
+# jsdelivr-auto-fallback [![NPM Version](https://img.shields.io/npm/v/jsdelivr-auto-fallback)](https://www.npmjs.com/package/jsdelivr-auto-fallback) [![jsdelivr-auto-fallback](https://img.shields.io/github/stars/PipecraftNet/jsdelivr-auto-fallback)](https://github.com/PipecraftNet/jsdelivr-auto-fallback)
 
 > 修复 cdn.jsdelivr.net 无法访问的问题
 
@@ -39,15 +39,19 @@ ex.
 2. 所有 `script` 标签加上 `defer` 属性。如果原来有 `async` 属性，可以跳过。这个可以避免 `pending` 状态带来的等待时间，大大提升性能。
 
 ## 用户脚本
-> 作为用户,你也可以使用本油猴脚本来将网站中的`cdn.jsdelivr.net`替换为可以访问的域名
-1. 安装`Tampermonkey`(自行百度)
+
+作为用户，你也可以使用本**油猴脚本**来将网站中的 `cdn.jsdelivr.net` 替换为可以访问的域名。
+
+1. 安装 `Tampermonkey` (自行百度)
 2. 前往此处安装脚本: [greasyfork](https://greasyfork.org/zh-CN/scripts/445701-jsdelivr-auto-fallback)
+
+> 感谢 [DreamOfIce](https://github.com/DreamOfIce) 贡献油猴脚本。
 
 ## Release Note
 
-### v0.2.1 (2022/5/30)
+### v0.2.2 (2022/5/30)
 
-- 添加一个TamperMonkey脚本，使用户可以替换网站中无法访问的域名
+- 添加一个 TamperMonkey 脚本，使用户可以替换网站中无法访问的域名
 
 ### v0.2.0 (2022/5/24)
 
@@ -73,6 +77,11 @@ ex.
 ## 问题反馈
 
 <https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues>
+
+## Related
+
+- [用户脚本版 jsdelivr-auto-fallback](https://greasyfork.org/zh-CN/scripts/445701-jsdelivr-auto-fallback) - 当网站因为使用 `jsdelivr-auto-fallback` 访问遇到问题时，可以用油猴脚本解决问题
+- [SW-Racing](https://github.com/Lete114/SW-Racing) - 使用 Service Workers 拯救你网站上的 jsdelivr CDN
 
 ## License
 

@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name Jsdelivr Auto Fallback
 // @namespace https://github.com/PipecraftNet/jsdelivr-auto-fallback
-// @version 0.2.1
+// @version 0.2.2
 // @author PipecraftNet&DreamOfIce
 // @description 修复 cdn.jsdelivr.net 无法访问的问题
-// @homepage https://github.com//jsdelivr-auto-fallback
+// @homepage https://github.com/PipecraftNet/jsdelivr-auto-fallback
 // @downloadURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
 // @updateURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
 // @supportURL https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues
@@ -126,10 +126,8 @@
 
   const cached = (() => {
     try {
-      return Object.assign(
-        {},
-        JSON.parse(GM_getValue(STORE_KEY) || '{}')
-      );
+      // eslint-disable-next-line new-cap
+      return Object.assign({}, GM_getValue(STORE_KEY));
     } catch {
       return {};
     }
@@ -167,7 +165,8 @@
         tryReplace();
       }
 
-      GM_setValue(STORE_KEY, JSON.stringify(cached));
+      // eslint-disable-next-line new-cap
+      GM_setValue(STORE_KEY, cached);
     }, TIMEOUT + 100);
   };
 

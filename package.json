@@ -1,6 +1,6 @@
 {
   "name": "jsdelivr-auto-fallback",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "修复 cdn.jsdelivr.net 无法访问的问题",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/PipecraftNet/jsdelivr-auto-fallback.git"
   },
+  "files": [
+    "index.js",
+    "index.min.js",
+    "LICENSE",
+    "README.md"
+  ],
   "keywords": [
     "jsdelivr"
   ],

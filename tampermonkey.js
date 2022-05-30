@@ -8,8 +8,10 @@
 // @downloadURL https://ghproxy.com/https://github.com/PipecraftNet/jsdelivr-auto-fallback/raw/main/tampermonkey.js
 // @supportURL https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues
 // @license MIT
-// @match *
+// @match *://*/*
 // @run-at document-start
+// @grant GM_setValue
+// @grant GM_getValue
 // ==/UserScript==
 
 ((document) => {

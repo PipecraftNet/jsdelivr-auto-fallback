@@ -41,7 +41,8 @@ ex.
 ## 用户脚本
 > 作为用户,你也可以使用本油猴脚本来将网站中的`cdn.jsdelivr.net`替换为可以访问的域名
 1. 安装`Tampermonkey`(自行百度)
-2. 前往此处安装脚本
+2. 前往此处安装脚本: [greasyfork](https://greasyfork.org/zh-CN/scripts/445701-jsdelivr-auto-fallback)
+
 ## Release Note
 
 ### v0.2.0 (2022/5/24)

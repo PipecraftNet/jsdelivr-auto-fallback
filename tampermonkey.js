@@ -1,3 +1,20 @@
+// ==UserScript==
+// @name Jsdelivr Auto Fallback
+// @namespace https://github.com/PipecraftNet/jsdelivr-auto-fallback
+// @version 0.2.1
+// @author PipecraftNet&DreamOfIce
+// @description 修复 cdn.jsdelivr.net 无法访问的问题
+// @homepage https://github.com//jsdelivr-auto-fallback
+// @downloadURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
+// @updateURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
+// @supportURL https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues
+// @license MIT
+// @match *://*/*
+// @run-at document-start
+// @grant GM_setValue
+// @grant GM_getValue
+// ==/UserScript==
+
 ((document) => {
   'use strict';
   let fastNode;
@@ -111,7 +128,7 @@
     try {
       return Object.assign(
         {},
-        JSON.parse(localStorage.getItem(STORE_KEY) || '{}')
+        JSON.parse(GM_getValue(STORE_KEY) || '{}')
       );
     } catch {
       return {};
@@ -150,7 +167,7 @@
         tryReplace();
       }
 
-      localStorage.setItem(STORE_KEY, JSON.stringify(cached));
+      GM_setValue(STORE_KEY, JSON.stringify(cached));
     }, TIMEOUT + 100);
   };
 

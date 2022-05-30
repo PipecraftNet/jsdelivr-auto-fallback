@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name Jsdelivr Auto Fallback
 // @namespace https://github.com/PipecraftNet/jsdelivr-auto-fallback
-// @version 0.2.0
+// @version 0.2.1
 // @author PipecraftNet&DreamOfIce
 // @description 修复 cdn.jsdelivr.net 无法访问的问题
 // @homepage https://github.com//jsdelivr-auto-fallback
-// @downloadURL https://ghproxy.com/https://github.com/PipecraftNet/jsdelivr-auto-fallback/raw/main/tampermonkey.js
+// @downloadURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
+// @updateURL https://greasyfork.org/scripts/445701-jsdelivr-auto-fallback/code/Jsdelivr%20Auto%20Fallback.user.js
 // @supportURL https://github.com/PipecraftNet/jsdelivr-auto-fallback/issues
 // @license MIT
 // @match *://*/*
@@ -23,6 +24,7 @@
     'cdn.jsdelivr.net',
     'fastly.jsdelivr.net',
     'gcore.jsdelivr.net',
+    'cdn.zenless.top',
     'testingcf.jsdelivr.net',
     'test1.jsdelivr.net'
   ];

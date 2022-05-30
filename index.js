@@ -7,6 +7,7 @@
     'cdn.jsdelivr.net',
     'fastly.jsdelivr.net',
     'gcore.jsdelivr.net',
+    'cdn.zenless.top',
     'testingcf.jsdelivr.net',
     'test1.jsdelivr.net'
   ];

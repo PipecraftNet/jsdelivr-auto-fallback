@@ -85,6 +85,7 @@ ex.
 - [hexo-filter-jsdelivr-auto-fallback](https://github.com/PipecraftNet/hexo-filter-jsdelivr-auto-fallback) - Add jsdelivr-auto-fallback to **hexo** site automatically
 - [用户脚本版 jsdelivr-auto-fallback](https://greasyfork.org/zh-CN/scripts/445701-jsdelivr-auto-fallback) - 当网站因为使用 `jsdelivr-auto-fallback` 访问遇到问题时，可以用油猴脚本解决问题
 - [SW-Racing](https://github.com/Lete114/SW-Racing) - 使用 Service Workers 拯救你网站上的 jsdelivr CDN
+- [freecdn](https://github.com/EtherDream/freecdn) - A front-end CDN based on ServiceWorker
 
 ## License
 

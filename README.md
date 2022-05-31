@@ -38,6 +38,8 @@ ex.
 1. 直接复制 [index.js](index.js) 或 [index.min.js](index.min.js) 里的内容，加到网站里。强烈建议添加到 head 标签最上面。
 2. 所有 `script` 标签加上 `defer` 属性。如果原来有 `async` 属性，可以跳过。这个可以避免 `pending` 状态带来的等待时间，大大提升性能。
 
+> 如果是 **hexo** 生成的网站，可以安装 [hexo-filter-jsdelivr-auto-fallback](https://github.com/PipecraftNet/hexo-filter-jsdelivr-auto-fallback) 插件，自动添加。
+
 ## 用户脚本
 
 作为用户，你也可以使用本**油猴脚本**来将网站中的 `cdn.jsdelivr.net` 替换为可以访问的域名。
@@ -80,6 +82,7 @@ ex.
 
 ## Related
 
+- [hexo-filter-jsdelivr-auto-fallback](https://github.com/PipecraftNet/hexo-filter-jsdelivr-auto-fallback) - Add jsdelivr-auto-fallback to **hexo** site automatically
 - [用户脚本版 jsdelivr-auto-fallback](https://greasyfork.org/zh-CN/scripts/445701-jsdelivr-auto-fallback) - 当网站因为使用 `jsdelivr-auto-fallback` 访问遇到问题时，可以用油猴脚本解决问题
 - [SW-Racing](https://github.com/Lete114/SW-Racing) - 使用 Service Workers 拯救你网站上的 jsdelivr CDN
 

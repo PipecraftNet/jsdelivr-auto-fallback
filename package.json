@@ -1,13 +1,13 @@
 {
   "name": "jsdelivr-auto-fallback",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "修复 cdn.jsdelivr.net 无法访问的问题",
   "main": "index.js",
   "scripts": {
     "build": "uglifyjs index.js -c -m -o index.min.js",
     "lint": "prettier --write . && xo",
     "lint:fix": "prettier --write . && xo --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",

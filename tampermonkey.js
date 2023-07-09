@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Jsdelivr Auto Fallback
 // @namespace https://github.com/PipecraftNet/jsdelivr-auto-fallback
-// @version 0.2.2
+// @version 0.2.3
 // @author PipecraftNet&DreamOfIce
 // @description 修复 cdn.jsdelivr.net 无法访问的问题
 // @homepage https://github.com/PipecraftNet/jsdelivr-auto-fallback

@@ -180,7 +180,19 @@
     fastNode = cached.fastNode;
     tryReplace();
     setTimeout(main, 1000);
-  } else {
+  } else if (document.head) {
     main();
+  } else {
+    const observer = new MutationObserver(() => {
+      if (document.head) {
+        observer.disconnect();
+        main();
+      }
+    });
+    const observerOptions = {
+      childList: true,
+      subtree: true
+    };
+    observer.observe(document, observerOptions);
   }
 })(document);

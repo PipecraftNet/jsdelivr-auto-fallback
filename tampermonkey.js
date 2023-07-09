@@ -11,11 +11,11 @@
 // @license MIT
 // @match *://*/*
 // @run-at document-start
-// @grant GM_setValue
-// @grant GM_getValue
+// @grant GM.setValue
+// @grant GM.getValue
 // ==/UserScript==
 
-((document) => {
+(async (document) => {
   'use strict';
   let fastNode;
   let failed;
@@ -36,7 +36,6 @@
   const TEST_PATH = '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?';
   const shouldReplace = (text) => text && text.includes(PREFIX + SOURCE);
   const replace = (text) => text.replace(PREFIX + SOURCE, PREFIX + fastNode);
-  const setTimeout = window.setTimeout;
   const $ = document.querySelectorAll.bind(document);
 
   const replaceElementSrc = () => {
@@ -124,10 +123,9 @@
     document.head.insertAdjacentElement('afterbegin', newNode);
   };
 
-  const cached = (() => {
+  const cached = await (async () => {
     try {
-      // eslint-disable-next-line new-cap
-      return Object.assign({}, GM_getValue(STORE_KEY));
+      return Object.assign({}, await GM.getValue(STORE_KEY));
     } catch {
       return {};
     }
@@ -165,8 +163,7 @@
         tryReplace();
       }
 
-      // eslint-disable-next-line new-cap
-      GM_setValue(STORE_KEY, cached);
+      GM.setValue(STORE_KEY, cached);
     }, TIMEOUT + 100);
   };
 

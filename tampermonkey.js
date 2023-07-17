@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Jsdelivr Auto Fallback
 // @namespace https://github.com/PipecraftNet/jsdelivr-auto-fallback
-// @version 0.2.3
+// @version 0.2.4
 // @author PipecraftNet&DreamOfIce
 // @description 修复 cdn.jsdelivr.net 无法访问的问题
 // @homepage https://github.com/PipecraftNet/jsdelivr-auto-fallback
@@ -13,6 +13,7 @@
 // @run-at document-start
 // @grant GM.setValue
 // @grant GM.getValue
+// @grant GM_addElement
 // ==/UserScript==
 
 (async (document) => {
@@ -37,6 +38,43 @@
   const shouldReplace = (text) => text && text.includes(PREFIX + SOURCE);
   const replace = (text) => text.replace(PREFIX + SOURCE, PREFIX + fastNode);
   const $ = document.querySelectorAll.bind(document);
+  const setAttributes = (element, attributes) => {
+    if (element && attributes) {
+      for (const name in attributes) {
+        if (Object.hasOwn(attributes, name)) {
+          const value = attributes[name];
+          if (value === undefined) {
+            continue;
+          }
+
+          element.setAttribute(name, value);
+        }
+      }
+    }
+
+    return element;
+  };
+
+  const createElement = (tagName, attributes) =>
+    setAttributes(document.createElement(tagName), attributes);
+  const addElement =
+    typeof GM_addElement === 'function'
+      ? GM_addElement
+      : (parentNode, tagName, attributes) => {
+          if (!parentNode) {
+            return;
+          }
+
+          if (typeof parentNode === 'string') {
+            attributes = tagName;
+            tagName = parentNode;
+            parentNode = document.head;
+          }
+
+          const element = createElement(tagName, attributes);
+          parentNode.append(element);
+          return element;
+        };
 
   const replaceElementSrc = () => {
     let element;
@@ -51,11 +89,11 @@
     for (element of $('script')) {
       value = element.src;
       if (shouldReplace(value)) {
-        const newNode = document.createElement('script');
-        newNode.src = replace(value);
+        addElement(element.parentNode, 'script', {
+          src: replace(value)
+        });
         element.defer = true;
         element.src = '';
-        element.before(newNode);
         element.remove();
       }
     }
@@ -99,7 +137,12 @@
 
   const checkAvailable = (url, callback) => {
     let timeoutId;
-    const newNode = document.createElement('link');
+    const newNode = addElement(document.head, 'link', {
+      rel: 'stylesheet',
+      text: 'text/css',
+      href: url + TEST_PATH + starTime
+    });
+
     const handleResult = (isSuccess) => {
       if (!timeoutId) {
         return;
@@ -108,7 +151,7 @@
       clearTimeout(timeoutId);
       timeoutId = 0;
       // Used to cancel loading. Without this line it will remain pending status.
-      if (!isSuccess) newNode.href = 'data:text/plain;base64,';
+      if (!isSuccess) newNode.href = 'data:text/css;base64,';
       newNode.remove();
       callback(isSuccess);
     };
@@ -117,10 +160,6 @@
 
     newNode.addEventListener('error', () => handleResult(false));
     newNode.addEventListener('load', () => handleResult(true));
-    newNode.rel = 'stylesheet';
-    newNode.text = 'text/css';
-    newNode.href = url + TEST_PATH + starTime;
-    document.head.insertAdjacentElement('afterbegin', newNode);
   };
 
   const cached = await (async () => {

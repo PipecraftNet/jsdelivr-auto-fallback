@@ -92,7 +92,7 @@
       clearTimeout(timeoutId);
       timeoutId = 0;
       // Used to cancel loading. Without this line it will remain pending status.
-      if (!isSuccess) newNode.href = 'data:text/plain;base64,';
+      if (!isSuccess) newNode.href = 'data:text/css;base64,';
       newNode.remove();
       callback(isSuccess);
     };
